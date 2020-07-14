@@ -32,6 +32,16 @@ invalid_unsolved = [[5,3,0,0,7,0,0,0,0],
                     [0,0,0,4,1,9,0,0,5],
                     [0,0,0,0,8,0,0,7,7]]
 
+test_1 = [[0,0,0,0,0,0,0,2,0],
+          [0,0,1,3,0,8,0,0,0],
+          [9,8,0,0,0,7,3,4,0],
+          [0,6,0,0,0,5,0,0,0],
+          [8,9,0,0,0,0,0,3,7],
+          [0,0,0,7,0,0,0,8,0],
+          [0,2,3,6,0,0,0,1,5],
+          [0,0,0,5,0,1,2,0,0],
+          [0,1,0,0,0,0,0,0,0]]
+
 # prints the sudoku to terminal
 def display_board(sudoku):
     print(numpy.matrix(sudoku))
@@ -55,3 +65,13 @@ def display_board(sudoku):
 # print(solver.isValidSudoku(invalid_unsolved)) # False
 
 # solve function
+# display_board(unsolved)
+# solver.solve(unsolved)
+# print("solution:")
+# display_board(unsolved)
+
+# display_board(test_1)
+# solver.solve(test_1)
+# print(f"solution {solver.isValidSudoku(test_1)}")
+# display_board(test_1)
+

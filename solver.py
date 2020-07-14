@@ -43,14 +43,17 @@ def isValidSudoku(sudoku):
     # is valid
     return True
 
-# def solve(sudoku):
-#     for y in range(9):
-#         for x in range(9):
-#             if sudoku[y][x] == 0:
-#                 for num in range(1,10):
-#                     if isValidMove(sudoku, y, x, num):
-#                         sudoku[y][x] = num
-#                         solve(sudoku)
-#                         sudoku[y][x] = 0
-#                     return
-#     return
+# solves sudoku using recursion and backtracking
+def solve(sudoku):
+    for y in range(9):
+        for x in range(9):
+            if sudoku[y][x] == 0:
+                for num in range(1,10):
+                    if isValidMove(sudoku, y, x, num):
+                        sudoku[y][x] = num
+                        if solve(sudoku):
+                            return True
+                        sudoku[y][x] = 0
+                return False
+    return True
+
