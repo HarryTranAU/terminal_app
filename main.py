@@ -46,7 +46,37 @@ test_1 = [[0,0,0,0,0,0,0,2,0],
 def display_board(sudoku):
     print(numpy.matrix(sudoku))
 
+# takes user input
+def userInputRow():
+    userSudoku = []
+    while len(userSudoku) < 9:
+        userRow = input("""Input your Sudoku one row at a time, top to bottom
+Enter empty cells as 0 and number cells as the number 1-9
+Type 'back' to remove last row\n""")
+        # Sanitize input
 
+        # Check input
+        if userRow == "back":
+            try:
+                userSudoku.pop()
+                continue
+            except IndexError:
+                print("Nothing to remove, try again\n")
+                continue
+        
+        if len(userRow) != 9:
+            print("Invalid length, try again\n")
+        else:
+            try:
+                int(userRow)
+                # convert string to list of int
+                userSudoku.append(list(map(int,userRow)))
+                display_board(userSudoku)
+                
+            except ValueError:
+                print("Invalid input, please use integers from 0-9\n")
+
+    return userSudoku
 
 # tests
 
@@ -75,3 +105,5 @@ def display_board(sudoku):
 # print(f"solution {solver.isValidSudoku(test_1)}")
 # display_board(test_1)
 
+# User Input
+userInputRow()
