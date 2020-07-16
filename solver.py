@@ -1,5 +1,3 @@
-
-
 # checks if there is a duplicate in row, column, 3x3 square
 def isValidMove(sudoku, y, x, num):
     # check row
@@ -42,6 +40,7 @@ def isValidSudoku(sudoku):
 
     # is valid
     return True
+
 
 # solves sudoku using recursion and backtracking
 def solve(sudoku):

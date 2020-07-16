@@ -1,7 +1,7 @@
 import numpy
 import solver
 
-# sample sudoku
+# Sample sudokus
 solved = [[4,3,5,2,6,9,7,8,1],
           [6,8,2,5,7,1,4,9,3],
           [1,9,7,8,3,4,5,6,2],
@@ -42,47 +42,90 @@ test_1 = [[0,0,0,0,0,0,0,2,0],
           [0,0,0,5,0,1,2,0,0],
           [0,1,0,0,0,0,0,0,0]]
 
-# prints the sudoku to terminal
-def display_board(sudoku):
+# Messages
+navigation_message = """\nWelcome to my Sudoku App!
+Navigation: Type in the word or number
+1. Solve
+0. Exit\n"""
+
+row_message = """\nInput your Sudoku one row at a time, top to bottom
+Enter empty cells as 0 and number cells as the number 1-9
+Type 'back' to remove last row, 'exit' to return to navigation\n"""
+
+exit_app = "\nBye!"
+
+# Prints the sudoku to terminal
+def displayBoard(sudoku):
     print(numpy.matrix(sudoku))
 
-# takes user input
+
+# Takes user input
 def userInputRow():
     userSudoku = []
     while len(userSudoku) < 9:
-        userRow = input("""Input your Sudoku one row at a time, top to bottom
-Enter empty cells as 0 and number cells as the number 1-9
-Type 'back' to remove last row\n""")
+        userRow = input(row_message)
         # Sanitize input
-
+        userRow = userRow.replace(" ","")
+        
         # Check input
         if userRow == "back":
             try:
                 userSudoku.pop()
+                displayBoard(userSudoku)
                 continue
             except IndexError:
                 print("Nothing to remove, try again\n")
                 continue
         
+        if userRow == "exit":
+            return []
+        
         if len(userRow) != 9:
             print("Invalid length, try again\n")
+            displayBoard(userSudoku)
         else:
             try:
                 int(userRow)
-                # convert string to list of int
+                # Convert string to list of int
                 userSudoku.append(list(map(int,userRow)))
-                display_board(userSudoku)
+                displayBoard(userSudoku)
                 
             except ValueError:
                 print("Invalid input, please use integers from 0-9\n")
 
     return userSudoku
 
-# tests
+
+# Main loop / Navigation
+while True:
+    userDecision = input(navigation_message)
+
+    # Sanitise input
+    userDecision = userDecision.lower().replace(" ", "")
+
+    # 1. Solve
+    if userDecision in ["1", "solve"]:
+        userSudoku = userInputRow()
+        if userSudoku == []:
+            continue
+        elif solver.isValidSudoku(userSudoku):
+            print("\nSolution:")
+            solver.solve(userSudoku)
+            displayBoard(userSudoku)
+        else:
+            print("Sudoku not valid")
+
+    # 0. Exit
+    if userDecision in ["0", "exit"]:
+        print(exit_app)
+        break
+
+
+# Tests
 
 # display
-# display_board(solved) # terminal display
-# display_board(unsolved) # terminal display
+# displayBoard(solved) # terminal display
+# displayBoard(unsolved) # terminal display
 
 # isValidMove function
 # print(solver.isValidMove(unsolved,4,4,5)) # True
@@ -95,15 +138,15 @@ Type 'back' to remove last row\n""")
 # print(solver.isValidSudoku(invalid_unsolved)) # False
 
 # solve function
-# display_board(unsolved)
+# displayBoard(unsolved)
 # solver.solve(unsolved)
 # print("solution:")
-# display_board(unsolved)
+# displayBoard(unsolved)
 
-# display_board(test_1)
+# displayBoard(test_1)
 # solver.solve(test_1)
 # print(f"solution {solver.isValidSudoku(test_1)}")
-# display_board(test_1)
+# displayBoard(test_1)
 
 # User Input
-userInputRow()
+# userInputRow()
