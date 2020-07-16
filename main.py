@@ -1,4 +1,4 @@
-import numpy
+import itertools
 import random
 import copy
 import solver
@@ -54,6 +54,24 @@ blank_board = [[0,0,0,0,0,0,0,0,0],
                [0,0,0,0,0,0,0,0,0],
                [0,0,0,0,0,0,0,0,0]]
 
+better_looking_board = """
+  +-------+-------+-------+
+1 | {} {} {} | {} {} {} | {} {} {} |
+2 | {} {} {} | {} {} {} | {} {} {} |
+3 | {} {} {} | {} {} {} | {} {} {} |
+  +-------+-------+-------+
+4 | {} {} {} | {} {} {} | {} {} {} |
+5 | {} {} {} | {} {} {} | {} {} {} |
+6 | {} {} {} | {} {} {} | {} {} {} |
+  +-------+-------+-------+
+7 | {} {} {} | {} {} {} | {} {} {} |
+8 | {} {} {} | {} {} {} | {} {} {} |
+9 | {} {} {} | {} {} {} | {} {} {} |
+  +-------+-------+-------+
+    A B C   D E F   G H I
+"""
+
+
 # Messages
 navigation_message = """\nWelcome to my Sudoku App!
 Navigation: Type in the word or number
@@ -74,11 +92,11 @@ Input: """
 exit_app = "\nBye!"
 
 
-difficulty = { "easy": 10, "medium": 20, "hard": 30 }
+difficulty = { "easy": 10, "medium": 54, "hard": 64 }
 
 # Prints the sudoku to terminal
 def displayBoard(sudoku):
-    print(numpy.matrix(sudoku))
+    print(better_looking_board.format(*list(itertools.chain(*sudoku))))
 
 
 # Takes user input
