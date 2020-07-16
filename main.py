@@ -186,7 +186,8 @@ while True:
                     want_solution = input("Would you like the solution to this Sudoku(yes/no)? ")
                     want_solution = want_solution.lower().replace(" ", "") # Remove spaces and upper case
                     if want_solution == "yes":
-                        print("print solution here")
+                        solver.solve(generatedSudoku)
+                        displayBoard(generatedSudoku)
                         break
                     elif want_solution == "no":
                         break
