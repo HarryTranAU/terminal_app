@@ -1,5 +1,6 @@
 import numpy
 import random
+import copy
 import solver
 
 # Sample sudokus
@@ -116,8 +117,11 @@ def userInputRow():
 
 # Generate sudoku
 def generateSudoku(diff):
+    new_Sudoku = copy.deepcopy(blank_board)
     # Create a random valid filled Sudoku
-
+    random_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    random.shuffle(random_list)
+    print(random_list)
     # Replace cells with 0 according to difficulty
     return blank_board
 
@@ -149,7 +153,7 @@ while True:
                 generatedSudoku = generateSudoku(user_difficulty)
                 displayBoard(generatedSudoku)
                 while True:
-                    want_solution = input("Would you like the solution to this Sudoku? (yes/no)")
+                    want_solution = input("Would you like the solution to this Sudoku(yes/no)? ")
                     want_solution = want_solution.lower().replace(" ", "") # Remove spaces and upper case
                     if want_solution == "yes":
                         print("print solution here")
