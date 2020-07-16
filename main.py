@@ -96,7 +96,7 @@ difficulty = { "easy": 10, "medium": 54, "hard": 64 }
 
 # Prints the sudoku to terminal
 def displayBoard(sudoku):
-    print(better_looking_board.format(*list(itertools.chain(*sudoku))))
+    print(better_looking_board.format(*list(itertools.chain(*sudoku))).replace("0", "."))
 
 
 # Takes user input
