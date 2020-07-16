@@ -80,7 +80,7 @@ Navigation: Type in the word or number
 0. Exit
 Input: """
 
-row_message = """\nInput your Sudoku one row at a time, top to bottom
+row_message = """\nInput your Sudoku one row at a time, top to bottom. Example: 009028007
 Enter empty cells as 0 and number cells as the number 1-9
 Type 'back' to remove last row, 'exit' to return to navigation
 Input: """
