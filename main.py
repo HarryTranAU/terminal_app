@@ -119,11 +119,14 @@ def userInputRow():
 def generateSudoku(diff):
     new_Sudoku = copy.deepcopy(blank_board)
     # Create a random valid filled Sudoku
-    random_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+    random_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     random.shuffle(random_list)
-    print(random_list)
+    for i in range(9):
+        new_Sudoku[i][random.randrange(9)] = random_list[i]
+
+    solver.solve(new_Sudoku)
     # Replace cells with 0 according to difficulty
-    return blank_board
+    return new_Sudoku
 
 
 # Main loop / Navigation
