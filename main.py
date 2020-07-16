@@ -118,14 +118,23 @@ def userInputRow():
 # Generate sudoku
 def generateSudoku(diff):
     new_Sudoku = copy.deepcopy(blank_board)
+
     # Create a random valid filled Sudoku
     random_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     random.shuffle(random_list)
     for i in range(9):
         new_Sudoku[i][random.randrange(9)] = random_list[i]
-
     solver.solve(new_Sudoku)
+    
     # Replace cells with 0 according to difficulty
+    counter = 0
+    while counter < difficulty[diff]:
+        a = random.randrange(9)
+        b = random.randrange(9)
+        if new_Sudoku[a][b] != 0:
+            new_Sudoku[a][b] = 0
+            counter += 1
+    
     return new_Sudoku
 
 
