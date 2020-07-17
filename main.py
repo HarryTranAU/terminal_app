@@ -3,6 +3,7 @@ import random
 import copy
 import datetime
 import numpy
+import termcolor
 import solver
 
 # Sample sudokus
@@ -57,6 +58,7 @@ blank_board = [[0,0,0,0,0,0,0,0,0],
                [0,0,0,0,0,0,0,0,0]]
 
 better_looking_board = """
+        a b c   d e f   g h i
       +-------+-------+-------+
     1 | {} {} {} | {} {} {} | {} {} {} |
     2 | {} {} {} | {} {} {} | {} {} {} |
@@ -70,7 +72,6 @@ better_looking_board = """
     8 | {} {} {} | {} {} {} | {} {} {} |
     9 | {} {} {} | {} {} {} | {} {} {} |
       +-------+-------+-------+
-        a b c   d e f   g h i
 """
 
 
@@ -124,21 +125,21 @@ def userInputRow():
         
         # Check input
         if userRow == "":
-            print("No Input, Try again\n")
+            termcolor.cprint("No Input, Try again\n", "red")
         if userRow == "back":
             try:
                 user_Sudoku.pop()
                 print(numpy.matrix(user_Sudoku))
                 continue
             except IndexError:
-                print("Nothing to remove, try again\n")
+                termcolor.cprint("Nothing to remove, try again\n", "red")
                 continue
         
         if userRow == "exit":
             return []
         
         if len(userRow) != 9:
-            print("Invalid length, try again\n")
+            termcolor.cprint("Invalid length, try again\n", "red")
             print(numpy.matrix(user_Sudoku))
         else:
             try:
@@ -147,7 +148,7 @@ def userInputRow():
                 print(numpy.matrix(user_Sudoku))
                 
             except ValueError:
-                print("Invalid input, please use integers from 0-9\n")
+                termcolor.cprint("Invalid input, please use integers from 0-9\n", "red")
 
     return user_Sudoku
 
@@ -225,15 +226,15 @@ def play(sudoku):
         
         # Invalid move if string is bigger than 3
         if len(user_move) != 3:
-            print("Invalid move length. Expected: 3 characters")
+            termcolor.cprint("Invalid move length. Expected: 3 characters", "red")
             move_valid = False
         # First char between a-i
         elif user_move[0] not in horizontal or user_move[1] not in vertical[:9] or user_move[2] not in vertical:
-            print("Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)")
+            termcolor.cprint("Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)", "red")
             move_valid = False
         # Is move in an initially empty cell
         elif (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
-            print("Cannot overwrite this cell")
+            termcolor.cprint("Cannot overwrite this cell", "red")
             move_valid = False
         # If move is "."
         elif user_move[2] == ".":
@@ -242,7 +243,7 @@ def play(sudoku):
             continue
         # Find duplicate
         elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], int(user_move[2])):
-            print("Duplicate Found")
+            termcolor.cprint("Duplicate Found", "red")
             move_valid = False
 
         # If move is valid
@@ -259,7 +260,7 @@ def play(sudoku):
         timer(user_time)
     
     if play_counter == 0:
-        print("You Finished!")
+        termcolor.cprint("You Finished!", "blue")
     else:
         while True:
             want_solution = input("Would you like the solution to this Sudoku(yes/no)? ").lower().replace(" ", "")
@@ -271,8 +272,6 @@ def play(sudoku):
                 break
 
     return
-
-
 
 
 # Main loop / Navigation
@@ -289,7 +288,7 @@ while True:
             solver.solve(user_Sudoku)
             displayBoard(user_Sudoku)
         else:
-            print("Sudoku not valid")
+            termcolor.cprint("Sudoku not valid", "red")
 
     # 2. Generate
     if userDecision in ["2", "play"]:
@@ -299,17 +298,6 @@ while True:
             if user_difficulty in difficulty:
                 generatedSudoku = generateSudoku(user_difficulty)
                 play(generatedSudoku)
-                # displayBoard(generatedSudoku)
-                
-                # while True:
-                #     want_to_play = input("Would you like to play this Sudoku(yes/no)? ").lower().replace(" ", "")
-                #     if want_to_play == "yes":
-                #         play(generatedSudoku)
-                #         break
-                #     elif want_to_play == "no":
-                #         break
-
-
                 
                 # Finish generation and solution
                 break
