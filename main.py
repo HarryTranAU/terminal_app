@@ -1,3 +1,4 @@
+#! /usr/sbin/python
 import itertools
 import random
 import copy
