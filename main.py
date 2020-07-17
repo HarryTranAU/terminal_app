@@ -76,7 +76,8 @@ better_looking_board = """
 navigation_message = """\nWelcome to my Sudoku App!
 Navigation: Type in the word or number
 1. Solve
-2. Generate
+2. Play
+
 0. Exit
 Input: """
 
@@ -93,6 +94,7 @@ exit_app = "\nBye!"
 
 
 difficulty = { "easy": 10, "medium": 54, "hard": 64 }
+positions = { "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8 }
 
 # Prints the sudoku to terminal
 def displayBoard(sudoku):
@@ -103,8 +105,7 @@ def displayBoard(sudoku):
 def userInputRow():
     user_Sudoku = []
     while len(user_Sudoku) < 9:
-        userRow = input(row_message)
-        userRow = userRow.replace(" ","").replace(",","") # Remove Spaces and commas
+        userRow = input(row_message).replace(" ","").replace(",","").replace(".","")
         
         # Check input
         if userRow == "back":
@@ -125,7 +126,7 @@ def userInputRow():
         else:
             try:
                 int(userRow)
-                user_Sudoku.append(list(map(int,userRow))) # Convert string to list of int
+                user_Sudoku.append(list(map(int,userRow))) # Convert str to list of int for use when creating 9x9 grid
                 displayBoard(user_Sudoku)
                 
             except ValueError:
@@ -155,11 +156,81 @@ def generateSudoku(diff):
     
     return new_Sudoku
 
+# Timer Function
+def timer():
+    pass
+
+# Play Sudoku function
+def play(sudoku):
+    # print("play function coming soon")
+    # return
+    # Timer yes/no
+
+    # Make list of empty cells to differentiate between sudoku puzzle and user moves
+    empty_cells = []
+    for i in range(9):
+        for j in range(9):
+            if sudoku[i][j] == 0:
+                empty_cells.append((i,j))
+
+    # While loop until sudoku has no moves left
+    play_counter = len(empty_cells)
+    valid_inputs = "abcdefghi0123456789."
+    while play_counter > 0:
+        displayBoard(sudoku)
+        # Play instructions
+        print("Play Instructions here")
+        print(f"count: {play_counter}")
+        # move is valid unless flag 
+        move_valid = True
+        user_move = input("Input: ").lower().replace(" ", "").replace(",", "")
+        print(positions[user_move[0]])
+        print(int(user_move[1])-1)
+        print(user_move[2])
+        print(solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], user_move[2]))
+        # Exit play
+        if user_move == "exit":
+            break
+        
+        # Invalid move if string is bigger than 3
+        if len(user_move) != 3:
+            print("Invalid move length. Expecting 3 characters")
+            move_valid = False
+        # Is user move valid
+        for char in user_move:
+            if char not in valid_inputs:
+                print("Invalid input")
+                move_valid = False
+        # Is move in an initially empty cell
+        if (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
+            print("Cannot overwrite this cell")
+            move_valid = False
+        # Find duplicate
+        
+        elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], user_move[2]):
+            print("Duplicate Found")
+            move_valid = False
+
+        # If move is valid
+        if move_valid == False:
+            continue
+        
+        # If move is "."
+        if user_move[2] == ".":
+            sudoku[int(user_move[1])-1][positions[user_move[0]]] = 0
+            play_counter -= 1
+            continue
+
+        sudoku[int(user_move[1])-1][positions[user_move[0]]] = int(user_move[2])
+        play_counter -= 1
+    return
+
+
+
 
 # Main loop / Navigation
 while True:
-    userDecision = input(navigation_message)
-    userDecision = userDecision.lower().replace(" ", "") # Remove spaces and upper case
+    userDecision = input(navigation_message).lower().replace(" ", "")
 
     # 1. Solve
     if userDecision in ["1", "solve"]:
@@ -174,17 +245,25 @@ while True:
             print("Sudoku not valid")
 
     # 2. Generate
-    if userDecision in ["2", "generate"]:
+    if userDecision in ["2", "play"]:
         while True:
-            user_difficulty = input(difficulty_message)
-            user_difficulty = user_difficulty.lower().replace(" ", "") # Remove spaces and upper case
+            user_difficulty = input(difficulty_message).lower().replace(" ", "")
 
             if user_difficulty in difficulty:
                 generatedSudoku = generateSudoku(user_difficulty)
                 displayBoard(generatedSudoku)
+                
                 while True:
-                    want_solution = input("Would you like the solution to this Sudoku(yes/no)? ")
-                    want_solution = want_solution.lower().replace(" ", "") # Remove spaces and upper case
+                    want_to_play = input("Would you like to play this Sudoku(yes/no)? ").lower().replace(" ", "")
+                    if want_to_play == "yes":
+                        play(generatedSudoku)
+                        break
+                    elif want_to_play == "no":
+                        print("answer = no")
+                        break
+
+                while True:
+                    want_solution = input("Would you like the solution to this Sudoku(yes/no)? ").lower().replace(" ", "")
                     if want_solution == "yes":
                         solver.solve(generatedSudoku)
                         displayBoard(generatedSudoku)
