@@ -184,10 +184,7 @@ def play(sudoku):
         # move is valid unless flag 
         move_valid = True
         user_move = input("Input: ").lower().replace(" ", "").replace(",", "")
-        print(positions[user_move[0]])
-        print(int(user_move[1])-1)
-        print(user_move[2])
-        print(solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], user_move[2]))
+
         # Exit play
         if user_move == "exit":
             break
@@ -196,6 +193,7 @@ def play(sudoku):
         if len(user_move) != 3:
             print("Invalid move length. Expecting 3 characters")
             move_valid = False
+
         # Is user move valid
         for char in user_move:
             if char not in valid_inputs:
@@ -205,9 +203,15 @@ def play(sudoku):
         if (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
             print("Cannot overwrite this cell")
             move_valid = False
+
+        # If move is "."
+        if user_move[2] == ".":
+            sudoku[int(user_move[1])-1][positions[user_move[0]]] = 0
+            play_counter -= 1
+            continue
+
         # Find duplicate
-        
-        elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], user_move[2]):
+        elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], int(user_move[2])):
             print("Duplicate Found")
             move_valid = False
 
@@ -215,14 +219,10 @@ def play(sudoku):
         if move_valid == False:
             continue
         
-        # If move is "."
-        if user_move[2] == ".":
-            sudoku[int(user_move[1])-1][positions[user_move[0]]] = 0
-            play_counter -= 1
-            continue
-
         sudoku[int(user_move[1])-1][positions[user_move[0]]] = int(user_move[2])
         play_counter -= 1
+    
+    # Play ends when no spaces left to fill
     return
 
 
