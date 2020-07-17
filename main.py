@@ -57,33 +57,35 @@ blank_board = [[0,0,0,0,0,0,0,0,0],
                [0,0,0,0,0,0,0,0,0]]
 
 better_looking_board = """
-  +-------+-------+-------+
-1 | {} {} {} | {} {} {} | {} {} {} |
-2 | {} {} {} | {} {} {} | {} {} {} |
-3 | {} {} {} | {} {} {} | {} {} {} |
-  +-------+-------+-------+
-4 | {} {} {} | {} {} {} | {} {} {} |
-5 | {} {} {} | {} {} {} | {} {} {} |
-6 | {} {} {} | {} {} {} | {} {} {} |
-  +-------+-------+-------+
-7 | {} {} {} | {} {} {} | {} {} {} |
-8 | {} {} {} | {} {} {} | {} {} {} |
-9 | {} {} {} | {} {} {} | {} {} {} |
-  +-------+-------+-------+
-    a b c   d e f   g h i
+      +-------+-------+-------+
+    1 | {} {} {} | {} {} {} | {} {} {} |
+    2 | {} {} {} | {} {} {} | {} {} {} |
+    3 | {} {} {} | {} {} {} | {} {} {} |
+      +-------+-------+-------+
+    4 | {} {} {} | {} {} {} | {} {} {} |
+    5 | {} {} {} | {} {} {} | {} {} {} |
+    6 | {} {} {} | {} {} {} | {} {} {} |
+      +-------+-------+-------+
+    7 | {} {} {} | {} {} {} | {} {} {} |
+    8 | {} {} {} | {} {} {} | {} {} {} |
+    9 | {} {} {} | {} {} {} | {} {} {} |
+      +-------+-------+-------+
+        a b c   d e f   g h i
 """
 
 
 # Messages
 navigation_message = """
-********************************************
-| Welcome to my Sudoku App!                |
-| Navigation: Type in the word or number   |
-| 1. Solve                                 |
-| 2. Play                                  |
-|                                          |
-| 0. Exit                                  |
-********************************************
+**********************************************
+| Welcome to my Sudoku App!                  |
+|                                            |
+| Navigation: Type in the word or number     |
+|                                            |
+| 1. Solver (Get a solution to your Sudoku)  |
+| 2. Play   (Generate a Sudoku to play)      |
+|                                            |
+| 0. Exit                                    |
+**********************************************
 Input: """
 
 row_message = """
@@ -93,7 +95,7 @@ Type 'back' to remove last row, 'exit' to return to navigation
 Input: """
 
 difficulty_message = """
-Choose a difficulty: easy, medium, hard
+Choose a difficulty. Type: easy, medium, hard
 Type 'exit' to return to navigation
 Input: """
 
@@ -187,9 +189,7 @@ def timer(time=None):
 
 # Play Sudoku function
 def play(sudoku):
-    # print("play function coming soon")
-    # return
-    # Timer yes/no
+
     user_time = False
     while True:
         time_question = input("Would you like a timer(yes/no)? ").lower().replace(" ","")
@@ -198,7 +198,6 @@ def play(sudoku):
             break
         elif time_question == "no":
             break
-
 
     # Make list of empty cells to differentiate between sudoku puzzle and user moves
     empty_cells = []
@@ -209,7 +208,8 @@ def play(sudoku):
 
     # While loop until sudoku has no moves left
     play_counter = len(empty_cells)
-    valid_inputs = "abcdefghi0123456789."
+    horizontal = "abcdefghi"
+    vertical = "1234567890."
     while play_counter > 0:
         displayBoard(sudoku)
         # Play instructions
@@ -225,25 +225,21 @@ def play(sudoku):
         
         # Invalid move if string is bigger than 3
         if len(user_move) != 3:
-            print("Invalid move length. Expecting 3 characters")
+            print("Invalid move length. Expected: 3 characters")
             move_valid = False
-
-        # Is user move valid
-        for char in user_move:
-            if char not in valid_inputs:
-                print("Invalid input")
-                move_valid = False
+        # First char between a-i
+        elif user_move[0] not in horizontal or user_move[1] not in vertical[:8] or user_move[2] not in vertical:
+            print("Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)")
+            move_valid = False
         # Is move in an initially empty cell
-        if (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
+        elif (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
             print("Cannot overwrite this cell")
             move_valid = False
-
         # If move is "."
-        if user_move[2] == ".":
+        elif user_move[2] == ".":
             sudoku[int(user_move[1])-1][positions[user_move[0]]] = 0
             play_counter -= 1
             continue
-
         # Find duplicate
         elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], int(user_move[2])):
             print("Duplicate Found")
@@ -272,7 +268,7 @@ while True:
     userDecision = input(navigation_message).lower().replace(" ", "")
 
     # 1. Solve
-    if userDecision in ["1", "solve"]:
+    if userDecision in ["1", "solver"]:
         user_Sudoku = userInputRow()
         if user_Sudoku == []: # If user exits solver
             continue
