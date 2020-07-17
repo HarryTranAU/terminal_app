@@ -100,7 +100,7 @@ Type 'exit' to return to navigation
 Input: """
 
 play_instructions = """
-To enter a number, type the coordinates(bottom then left) followed by your answer
+To enter a number, type the coordinates(horizontal then vertical) followed by your answer
 Example: To enter 9 in the top left corner, type a19
 If you wish to quit, type 'exit'.
 """
@@ -228,7 +228,7 @@ def play(sudoku):
             print("Invalid move length. Expected: 3 characters")
             move_valid = False
         # First char between a-i
-        elif user_move[0] not in horizontal or user_move[1] not in vertical[:8] or user_move[2] not in vertical:
+        elif user_move[0] not in horizontal or user_move[1] not in vertical[:9] or user_move[2] not in vertical:
             print("Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)")
             move_valid = False
         # Is move in an initially empty cell
@@ -257,7 +257,19 @@ def play(sudoku):
     # Print timer if used
     if user_time:
         timer(user_time)
-    print("You Finished!")
+    
+    if play_counter == 0:
+        print("You Finished!")
+    else:
+        while True:
+            want_solution = input("Would you like the solution to this Sudoku(yes/no)? ").lower().replace(" ", "")
+            if want_solution == "yes":
+                solver.solve(generatedSudoku)
+                displayBoard(generatedSudoku)
+                break
+            elif want_solution == "no":
+                break
+
     return
 
 
@@ -286,24 +298,18 @@ while True:
 
             if user_difficulty in difficulty:
                 generatedSudoku = generateSudoku(user_difficulty)
-                displayBoard(generatedSudoku)
+                play(generatedSudoku)
+                # displayBoard(generatedSudoku)
                 
-                while True:
-                    want_to_play = input("Would you like to play this Sudoku(yes/no)? ").lower().replace(" ", "")
-                    if want_to_play == "yes":
-                        play(generatedSudoku)
-                        break
-                    elif want_to_play == "no":
-                        break
+                # while True:
+                #     want_to_play = input("Would you like to play this Sudoku(yes/no)? ").lower().replace(" ", "")
+                #     if want_to_play == "yes":
+                #         play(generatedSudoku)
+                #         break
+                #     elif want_to_play == "no":
+                #         break
 
-                while True:
-                    want_solution = input("Would you like the solution to this Sudoku(yes/no)? ").lower().replace(" ", "")
-                    if want_solution == "yes":
-                        solver.solve(generatedSudoku)
-                        displayBoard(generatedSudoku)
-                        break
-                    elif want_solution == "no":
-                        break
+
                 
                 # Finish generation and solution
                 break
