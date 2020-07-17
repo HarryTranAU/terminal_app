@@ -1,6 +1,7 @@
 import itertools
 import random
 import copy
+import datetime
 import solver
 
 # Sample sudokus
@@ -98,12 +99,13 @@ Input: """
 play_instructions = """
 To enter a number, type the coordinates(bottom then left) followed by your answer
 Example: To enter 9 in the top left corner, type a19
+If you wish to quit, type 'exit'.
 """
 
 exit_app = "\nBye!"
 
 
-difficulty = { "easy": 10, "medium": 54, "hard": 64 }
+difficulty = { "easy": 5, "medium": 20, "hard": 64 }
 positions = { "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8 }
 
 # Prints the sudoku to terminal
@@ -167,14 +169,33 @@ def generateSudoku(diff):
     return new_Sudoku
 
 # Timer Function
-def timer():
-    pass
+def timer(time=None):
+    # User hits enter to start timer
+    if time == None:
+        input("Press 'enter' to start timer...")
+        time = datetime.datetime.now()
+    else:
+        stop_time = datetime.datetime.now()
+        time_delta = stop_time - time
+        print(f"Your time: {time_delta.seconds//60} mins {time_delta.seconds%60} secs ")
+
+    return time
+    
 
 # Play Sudoku function
 def play(sudoku):
     # print("play function coming soon")
     # return
     # Timer yes/no
+    user_time = False
+    while True:
+        time_question = input("Would you like a timer(yes/no)? ").lower().replace(" ","")
+        if time_question == "yes":
+            user_time = timer()
+            break
+        elif time_question == "no":
+            break
+
 
     # Make list of empty cells to differentiate between sudoku puzzle and user moves
     empty_cells = []
@@ -234,7 +255,9 @@ def play(sudoku):
     
     # Play ends when no spaces left to fill
     displayBoard(sudoku)
-
+    # Print timer if used
+    if user_time:
+        timer(user_time)
     print("You Finished!")
     return
 
@@ -272,7 +295,6 @@ while True:
                         play(generatedSudoku)
                         break
                     elif want_to_play == "no":
-                        print("answer = no")
                         break
 
                 while True:
