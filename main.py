@@ -2,6 +2,7 @@ import itertools
 import random
 import copy
 import datetime
+import numpy
 import solver
 
 # Sample sudokus
@@ -120,10 +121,12 @@ def userInputRow():
         userRow = input(row_message).replace(" ","").replace(",","").replace(".","")
         
         # Check input
+        if userRow == "":
+            print("No Input, Try again\n")
         if userRow == "back":
             try:
                 user_Sudoku.pop()
-                displayBoard(user_Sudoku)
+                print(numpy.matrix(user_Sudoku))
                 continue
             except IndexError:
                 print("Nothing to remove, try again\n")
@@ -134,12 +137,12 @@ def userInputRow():
         
         if len(userRow) != 9:
             print("Invalid length, try again\n")
-            displayBoard(user_Sudoku)
+            print(numpy.matrix(user_Sudoku))
         else:
             try:
                 int(userRow)
                 user_Sudoku.append(list(map(int,userRow))) # Convert str to list of int for use when creating 9x9 grid
-                displayBoard(user_Sudoku)
+                print(numpy.matrix(user_Sudoku))
                 
             except ValueError:
                 print("Invalid input, please use integers from 0-9\n")
