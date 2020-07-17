@@ -68,7 +68,7 @@ better_looking_board = """
 8 | {} {} {} | {} {} {} | {} {} {} |
 9 | {} {} {} | {} {} {} | {} {} {} |
   +-------+-------+-------+
-    A B C   D E F   G H I
+    a b c   d e f   g h i
 """
 
 
@@ -94,6 +94,11 @@ difficulty_message = """
 Choose a difficulty: easy, medium, hard
 Type 'exit' to return to navigation
 Input: """
+
+play_instructions = """
+To enter a number, type the coordinates(bottom then left) followed by your answer
+Example: To enter 9 in the top left corner, type a19
+"""
 
 exit_app = "\nBye!"
 
@@ -184,8 +189,8 @@ def play(sudoku):
     while play_counter > 0:
         displayBoard(sudoku)
         # Play instructions
-        print("Play Instructions here")
-        print(f"count: {play_counter}")
+        print(play_instructions)
+        print(f"missing numbers left: {play_counter}")
         # move is valid unless flag 
         move_valid = True
         user_move = input("Input: ").lower().replace(" ", "").replace(",", "")
