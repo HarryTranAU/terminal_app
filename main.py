@@ -73,20 +73,25 @@ better_looking_board = """
 
 
 # Messages
-navigation_message = """\nWelcome to my Sudoku App!
-Navigation: Type in the word or number
-1. Solve
-2. Play
-
-0. Exit
+navigation_message = """
+********************************************
+| Welcome to my Sudoku App!                |
+| Navigation: Type in the word or number   |
+| 1. Solve                                 |
+| 2. Play                                  |
+|                                          |
+| 0. Exit                                  |
+********************************************
 Input: """
 
-row_message = """\nInput your Sudoku one row at a time, top to bottom. Example: 009028007
+row_message = """
+Input your Sudoku one row at a time, top to bottom. Example: 009028007
 Enter empty cells as 0 and number cells as the number 1-9
 Type 'back' to remove last row, 'exit' to return to navigation
 Input: """
 
-difficulty_message = """\nChoose a difficulty: easy, medium, hard
+difficulty_message = """
+Choose a difficulty: easy, medium, hard
 Type 'exit' to return to navigation
 Input: """
 
@@ -223,6 +228,9 @@ def play(sudoku):
         play_counter -= 1
     
     # Play ends when no spaces left to fill
+    displayBoard(sudoku)
+
+    print("You Finished!")
     return
 
 
