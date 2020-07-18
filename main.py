@@ -233,13 +233,22 @@ def play(sudoku):
     play_counter = len(empty_cells)
     horizontal = "abcdefghi"
     vertical = "1234567890."
+    error_message = ""
+    user_move = ""
     while play_counter > 0:
+        clear()
         displayBoard(sudoku)
         # Play instructions
         print(play_instructions)
         print(f"missing numbers left: {play_counter}")
+        print(f"Previous Input: {user_move}")
         # move is valid unless flag 
         move_valid = True
+
+        if error_message:
+            termcolor.cprint(error_message, "red")
+            error_message = ""
+
         user_move = input("Input: ").lower().replace(" ", "").replace(",", "")
 
         # Exit play
@@ -247,16 +256,16 @@ def play(sudoku):
             break
         
         # Invalid move if string is bigger than 3
-        if len(user_move) != 3:
-            termcolor.cprint("Invalid move length. Expected: 3 characters", "red")
+        elif len(user_move) != 3:
+            error_message = "Invalid move length. Expected: 3 characters"
             move_valid = False
         # First char between a-i
         elif user_move[0] not in horizontal or user_move[1] not in vertical[:9] or user_move[2] not in vertical:
-            termcolor.cprint("Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)", "red")
+            error_message = "Invalid move. Expected: Horizontal first (a-i), Vertical second (1-9), answer last (1-9)"
             move_valid = False
         # Is move in an initially empty cell
         elif (int(user_move[1])-1, positions[user_move[0]]) not in empty_cells:
-            termcolor.cprint("Cannot overwrite this cell", "red")
+            error_message = "Cannot overwrite this cell. Empty cells are marked with '.'"
             move_valid = False
         # If move is "."
         elif user_move[2] == ".":
@@ -265,7 +274,7 @@ def play(sudoku):
             continue
         # Find duplicate
         elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], int(user_move[2])):
-            termcolor.cprint("Duplicate Found", "red")
+            error_message = "Duplicate Found"
             move_valid = False
 
         # If move is valid
@@ -276,6 +285,7 @@ def play(sudoku):
         play_counter -= 1
     
     # Play ends when no spaces left to fill
+    clear()
     displayBoard(sudoku)
     # Print timer if used
     if user_time:
@@ -283,24 +293,31 @@ def play(sudoku):
     
     if play_counter == 0:
         termcolor.cprint("You Finished!", "blue")
+        input("Press 'enter' to return to navigation...")
+        clear()
     else:
         while True:
             want_solution = input("Would you like the solution to this Sudoku(yes/no)? ").lower().replace(" ", "")
             if want_solution == "yes":
                 solver.solve(generatedSudoku)
                 displayBoard(generatedSudoku)
+                input("Here is the solution. Press 'enter' to continue...")
+                clear()
                 break
             elif want_solution == "no":
+                clear()
                 break
 
 
 print(welcome_message)
+userDecision = ""
 # Main loop / Navigation
 while True:
     userDecision = input(navigation_message).lower().replace(" ", "")
 
     # 1. Solve
     if userDecision in ["1", "solver"]:
+        clear()
         user_Sudoku = userInputRow()
         if user_Sudoku == []: # If user exits solver
             continue
@@ -313,10 +330,12 @@ while True:
 
     # 2. Play
     elif userDecision in ["2", "play"]:
+        clear()
         while True:
             user_difficulty = input(difficulty_message).lower().replace(" ", "")
 
             if user_difficulty in difficulty:
+                print("Generating Sudoku. Please wait...")
                 generatedSudoku = generateSudoku(user_difficulty)
                 play(generatedSudoku)
                 
@@ -328,14 +347,15 @@ while True:
             else:
                 print("Please choose a difficulty from the list")
 
+    # 0. Exit
+    elif userDecision in ["0", "exit"]:
+        print(exit_app)
+        break
+    
     else:
         clear()
         termcolor.cprint("Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit", "red")
 
-    # 0. Exit
-    if userDecision in ["0", "exit"]:
-        print(exit_app)
-        break
 
 
 # Tests
