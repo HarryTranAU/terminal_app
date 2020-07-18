@@ -6,7 +6,22 @@ import datetime
 import numpy
 import termcolor
 import os
+import sys
 import solver
+
+if "--help" in sys.argv:
+    print("""
+--help
+    List of args
+    """)
+    exit()
+
+error_color = "red"
+error_back = None
+
+if "--colorblind" in sys.argv:
+    error_color = "blue"
+    error_back = "on_white"
 
 
 blank_board = [[0,0,0,0,0,0,0,0,0],
@@ -101,7 +116,7 @@ def userInputRow():
         # Check input
         if userRow == "":
             clear()
-            termcolor.cprint("No Input, Try again\n", "red")
+            termcolor.cprint("No Input, Try again\n", error_color, error_back)
         elif userRow == "back":
             clear()
             try:
@@ -109,7 +124,7 @@ def userInputRow():
                 print(numpy.matrix(user_Sudoku))
                 continue
             except IndexError:
-                termcolor.cprint("Nothing to remove, try again\n", "red")
+                termcolor.cprint("Nothing to remove, try again\n", error_color, error_back)
                 continue
         
         elif userRow == "exit":
@@ -118,7 +133,7 @@ def userInputRow():
         
         elif len(userRow) != 9:
             clear()
-            termcolor.cprint("Invalid length, try again\n", "red")
+            termcolor.cprint("Invalid length, try again\n", error_color, error_back)
             print(numpy.matrix(user_Sudoku))
         else:
             try:
@@ -129,7 +144,7 @@ def userInputRow():
                 
             except ValueError:
                 clear()
-                termcolor.cprint("Invalid input, please use integers from 0-9\n", "red")
+                termcolor.cprint("Invalid input, please use integers from 0-9\n", error_color, error_back)
                 print(numpy.matrix(user_Sudoku))
 
     return user_Sudoku
@@ -182,7 +197,7 @@ def play(sudoku):
         elif time_question == "no":
             break
         else:
-            termcolor.cprint("Please choose 'yes' or 'no'", "red")
+            termcolor.cprint("Please choose 'yes' or 'no'", error_color, error_back)
 
     # Make list of empty cells to differentiate between sudoku puzzle and user moves
     empty_cells = []
@@ -208,7 +223,7 @@ def play(sudoku):
         move_valid = True
 
         if error_message:
-            termcolor.cprint(error_message, "red")
+            termcolor.cprint(error_message, error_color, error_back)
             error_message = ""
 
         user_move = input("Input: ").lower().replace(" ", "").replace(",", "")
@@ -268,6 +283,8 @@ def play(sudoku):
             elif want_solution == "no":
                 clear()
                 break
+            else:
+                termcolor.cprint("Please choose 'yes' or 'no'", error_color, error_back)
 
 
 print(welcome_message)
@@ -287,7 +304,7 @@ while True:
             solver.solve(user_Sudoku)
             displayBoard(user_Sudoku)
         else:
-            termcolor.cprint("Sudoku not valid", "red")
+            termcolor.cprint("Sudoku not valid", error_color, error_back)
 
     # 2. Play
     elif userDecision in ["2", "play"]:
@@ -306,7 +323,7 @@ while True:
             elif user_difficulty == "exit":
                 break
             else:
-                termcolor.cprint("Please type 'easy', 'medium', or 'hard'", "red")
+                termcolor.cprint("Please type 'easy', 'medium', or 'hard'", error_color, error_back)
 
     # 0. Exit
     elif userDecision in ["0", "exit"]:
@@ -315,6 +332,6 @@ while True:
     
     else:
         clear()
-        termcolor.cprint("Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit", "red")
+        termcolor.cprint("Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit", error_color, error_back)
 
 
