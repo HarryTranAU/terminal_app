@@ -221,6 +221,8 @@ def play(sudoku):
             break
         elif time_question == "no":
             break
+        else:
+            termcolor.cprint("Please choose 'yes' or 'no'", "red")
 
     # Make list of empty cells to differentiate between sudoku puzzle and user moves
     empty_cells = []
@@ -254,7 +256,6 @@ def play(sudoku):
         # Exit play
         if user_move == "exit":
             break
-        
         # Invalid move if string is bigger than 3
         elif len(user_move) != 3:
             error_message = "Invalid move length. Expected: 3 characters"
@@ -345,7 +346,7 @@ while True:
             elif user_difficulty == "exit":
                 break
             else:
-                print("Please choose a difficulty from the list")
+                termcolor.cprint("Please type 'easy', 'medium', or 'hard'", "red")
 
     # 0. Exit
     elif userDecision in ["0", "exit"]:
