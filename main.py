@@ -275,7 +275,7 @@ def play(sudoku):
             continue
         # Find duplicate
         elif not solver.isValidMove(sudoku,int(user_move[1])-1, positions[user_move[0]], int(user_move[2])):
-            error_message = "Duplicate Found"
+            error_message = "Answer not correct. Duplicate found in row/column/square"
             move_valid = False
 
         # If move is valid
