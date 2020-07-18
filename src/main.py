@@ -11,8 +11,17 @@ import solver
 
 if "--help" in sys.argv:
     print("""
---help
-    List of args
+--rule
+    How to play Sudoku. Print out rules
+
+--colorblind
+    Change color of error messages. Change to blue with white background. Default: red, no background. 
+    """)
+    exit()
+
+if "--rule" in sys.argv:
+    print("""
+The goal of Sudoku is to fill a 9×9 grid with numbers so that each row, column and 3×3 section contain all of the digits between 1 and 9.    
     """)
     exit()
 
