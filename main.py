@@ -5,6 +5,7 @@ import copy
 import datetime
 import numpy
 import termcolor
+import os
 import solver
 
 # Sample sudokus
@@ -118,6 +119,14 @@ exit_app = "\nBye!"
 difficulty = { "easy": 5, "medium": 20, "hard": 64 }
 positions = { "a":0, "b":1, "c":2, "d":3, "e":4, "f":5, "g":6, "h":7, "i":8 }
 
+# Clear the terminal
+def clear():
+    # for windows
+    if os.name == "nt":
+        os.system("cls")
+    else:
+        os.system("clear")
+
 # Prints the sudoku to terminal
 def displayBoard(sudoku):
     print(better_looking_board.format(*list(itertools.chain(*sudoku))).replace("0", "."))
@@ -131,8 +140,10 @@ def userInputRow():
         
         # Check input
         if userRow == "":
+            clear()
             termcolor.cprint("No Input, Try again\n", "red")
-        if userRow == "back":
+        elif userRow == "back":
+            clear()
             try:
                 user_Sudoku.pop()
                 print(numpy.matrix(user_Sudoku))
@@ -141,20 +152,25 @@ def userInputRow():
                 termcolor.cprint("Nothing to remove, try again\n", "red")
                 continue
         
-        if userRow == "exit":
+        elif userRow == "exit":
+            clear()
             return []
         
-        if len(userRow) != 9:
+        elif len(userRow) != 9:
+            clear()
             termcolor.cprint("Invalid length, try again\n", "red")
             print(numpy.matrix(user_Sudoku))
         else:
             try:
                 int(userRow)
                 user_Sudoku.append(list(map(int,userRow))) # Convert str to list of int for use when creating 9x9 grid
+                clear()
                 print(numpy.matrix(user_Sudoku))
                 
             except ValueError:
+                clear()
                 termcolor.cprint("Invalid input, please use integers from 0-9\n", "red")
+                print(numpy.matrix(user_Sudoku))
 
     return user_Sudoku
 
@@ -277,7 +293,6 @@ def play(sudoku):
             elif want_solution == "no":
                 break
 
-    return
 
 print(welcome_message)
 # Main loop / Navigation
@@ -296,8 +311,8 @@ while True:
         else:
             termcolor.cprint("Sudoku not valid", "red")
 
-    # 2. Generate
-    if userDecision in ["2", "play"]:
+    # 2. Play
+    elif userDecision in ["2", "play"]:
         while True:
             user_difficulty = input(difficulty_message).lower().replace(" ", "")
 
@@ -312,6 +327,10 @@ while True:
                 break
             else:
                 print("Please choose a difficulty from the list")
+
+    else:
+        clear()
+        termcolor.cprint("Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit", "red")
 
     # 0. Exit
     if userDecision in ["0", "exit"]:
