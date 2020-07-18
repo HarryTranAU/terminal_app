@@ -77,9 +77,14 @@ better_looking_board = """
 
 
 # Messages
-navigation_message = """
+welcome_message = """
 **********************************************
 | Welcome to my Sudoku App!                  |
+**********************************************
+"""
+
+navigation_message = """
+**********************************************
 |                                            |
 | Navigation: Type in the word or number     |
 |                                            |
@@ -274,7 +279,7 @@ def play(sudoku):
 
     return
 
-
+print(welcome_message)
 # Main loop / Navigation
 while True:
     userDecision = input(navigation_message).lower().replace(" ", "")
