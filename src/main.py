@@ -78,7 +78,7 @@ navigation_message = """
 |                                            |
 | 0. Exit                                    |
 **********************************************
-Input: """
+"""
 
 row_message = """
 Input your Sudoku one row at a time, top to bottom. Example: 009028007
@@ -304,10 +304,15 @@ def play(sudoku):
 # Application start
 print(welcome_message)
 userDecision = ""
+error_message = ""
 
 # Main loop / Navigation
 while True:
-    userDecision = input(navigation_message).lower().replace(" ", "")
+    print(navigation_message)
+    if error_message:
+        termcolor.cprint(error_message, error_color, error_back)
+        error_message = ""
+    userDecision = input("Input: ").lower().replace(" ", "")
 
     # 1. Solve
     if userDecision in ["1", "solver"]:
@@ -350,6 +355,6 @@ while True:
     
     else:
         clear()
-        termcolor.cprint("Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit", error_color, error_back)
+        error_message = "Input not valid. Please type '1' for Solver, '2' for Play, or '0' to exit"
 
 
