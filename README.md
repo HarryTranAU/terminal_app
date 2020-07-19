@@ -1,4 +1,45 @@
-# Sudoku App
+# Harry's Sudoku App
+
+---
+
+## Help File
+
+Dependencies:
+
+``` 
+Python 3.8.3
+termcolor==1.1.0 
+```
+
+How to install and start Application:
+
+```
+1. Extract files
+2. cd HarryTran_T1A3/src/
+3. chmod +x main.py
+4. ./main.py
+
+optional args:
+
+--help : print a list of optional arguments
+--rule : print out the rules for sudoku
+--colorblind : change error colors from default (red, no background) to blue with white background
+```
+
+To use the Sudoku Solver:
+
+```
+1. Start the application
+2. Type '1' or 'Solver'
+```
+
+To play a generated Sudoku:
+
+```
+1. Start the application
+2. Type '2' or 'Play'
+```
+---
 
 ## Software Development Plan
 
@@ -230,6 +271,8 @@ Solver was created first because the solver is used in the generator. Generator 
 ---
 
 ## Testing
+
+Tests were performed manually by myself, classmates, and instructors. The tests outlined below formed the basis of structured testing. Further testing would require the tester to play around with the application unscripted.
 
 ![Manual Testing](docs/manual_test.JPG)
 
