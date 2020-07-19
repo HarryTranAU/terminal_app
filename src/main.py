@@ -84,7 +84,7 @@ row_message = """
 Input your Sudoku one row at a time, top to bottom. Example: 009028007
 Enter empty cells as 0 and number cells as the number 1-9
 Type 'back' to remove last row, 'exit' to return to navigation
-Input: """
+"""
 
 difficulty_message = """
 Choose a difficulty. Type: easy, medium, hard
@@ -97,7 +97,7 @@ Example: To enter 9 in the top left corner, type a19
 If you wish to quit, type 'exit'.
 """
 
-exit_app = "\nBye!"
+exit_app = "\nThanks for playing! Have an awesome day!"
 
 
 difficulty = { "easy": 5, "medium": 20, "hard": 64 }
@@ -119,13 +119,19 @@ def displayBoard(sudoku):
 # Takes user input
 def userInputRow():
     user_Sudoku = []
+    error_message = ""
     while len(user_Sudoku) < 9:
-        userRow = input(row_message).replace(" ","").replace(",","").replace(".","")
+        print(row_message)
+        if error_message:
+            termcolor.cprint(error_message, error_color, error_back)
+            error_message = ""
+        userRow = input("Input: ").replace(" ","").replace(",","").replace(".","")
         
         # Check input
         if userRow == "":
             clear()
-            termcolor.cprint("No Input, Try again\n", error_color, error_back)
+            error_message = "No Input, Try again"
+            print(numpy.matrix(user_Sudoku))
         elif userRow == "back":
             clear()
             try:
@@ -133,7 +139,7 @@ def userInputRow():
                 print(numpy.matrix(user_Sudoku))
                 continue
             except IndexError:
-                termcolor.cprint("Nothing to remove, try again\n", error_color, error_back)
+                error_message = "Nothing to remove, try again"
                 continue
         
         elif userRow == "exit":
@@ -142,7 +148,7 @@ def userInputRow():
         
         elif len(userRow) != 9:
             clear()
-            termcolor.cprint("Invalid length, try again\n", error_color, error_back)
+            error_message = "Invalid length, try again"
             print(numpy.matrix(user_Sudoku))
         else:
             try:
@@ -153,7 +159,7 @@ def userInputRow():
                 
             except ValueError:
                 clear()
-                termcolor.cprint("Invalid input, please use integers from 0-9\n", error_color, error_back)
+                error_message = "Invalid input, please use integers from 0-9"
                 print(numpy.matrix(user_Sudoku))
 
     return user_Sudoku
@@ -219,8 +225,8 @@ def play(sudoku):
     play_counter = len(empty_cells)
     horizontal = "abcdefghi"
     vertical = "1234567890."
-    error_message = ""
     user_move = ""
+    error_message = ""
     while play_counter > 0:
         clear()
         displayBoard(sudoku)
@@ -295,9 +301,10 @@ def play(sudoku):
             else:
                 termcolor.cprint("Please choose 'yes' or 'no'", error_color, error_back)
 
-
+# Application start
 print(welcome_message)
 userDecision = ""
+
 # Main loop / Navigation
 while True:
     userDecision = input(navigation_message).lower().replace(" ", "")
@@ -314,6 +321,8 @@ while True:
             displayBoard(user_Sudoku)
         else:
             termcolor.cprint("Sudoku not valid", error_color, error_back)
+            input("Press 'enter' to go back to navigation...")
+            clear()
 
     # 2. Play
     elif userDecision in ["2", "play"]:
