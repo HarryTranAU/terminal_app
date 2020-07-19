@@ -89,7 +89,7 @@ Type 'back' to remove last row, 'exit' to return to navigation
 difficulty_message = """
 Choose a difficulty. Type: easy, medium, hard
 Type 'exit' to return to navigation
-Input: """
+"""
 
 play_instructions = """
 To enter a number, type the coordinates(horizontal then vertical) followed by your answer
@@ -331,9 +331,13 @@ while True:
 
     # 2. Play
     elif userDecision in ["2", "play"]:
-        clear()
         while True:
-            user_difficulty = input(difficulty_message).lower().replace(" ", "")
+            clear()
+            print(difficulty_message)
+            if error_message:
+                termcolor.cprint(error_message, error_color, error_back)
+                error_message = ""
+            user_difficulty = input("Input: ").lower().replace(" ", "")
 
             if user_difficulty in difficulty:
                 print("Generating Sudoku. Please wait...")
@@ -346,7 +350,7 @@ while True:
             elif user_difficulty == "exit":
                 break
             else:
-                termcolor.cprint("Please type 'easy', 'medium', or 'hard'", error_color, error_back)
+                error_message = "Please type 'easy', 'medium', or 'hard'"
 
     # 0. Exit
     elif userDecision in ["0", "exit"]:
